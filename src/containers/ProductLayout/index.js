@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import ProductDetailCard from '../../components/ProductDetailCard'
+import { useState, useEffect } from "react";
+import axios from "axios";
+import ProductDetailCard from "../../components/ProductDetailCard";
 
 function ProductLayout() {
   const { productID } = useParams();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -15,7 +15,7 @@ function ProductLayout() {
         const { data } = await axios.get(
           `http://localhost:4000/api/products/${productID}`
         );
-        console.log(data)
+        console.log(data);
         setData(data);
         setLoading(false);
       } catch (err) {
@@ -26,7 +26,13 @@ function ProductLayout() {
     fetchData();
   }, []);
 
-  return <ProductDetailCard product={data} />;
+  return (
+    <>
+      {loading && <h1>Loading...</h1>}
+      {!loading && error && <h1>Error Occured</h1>}
+      {!loading && !error && data && <ProductDetailCard product={data} />}
+    </>
+  );
 }
 
 export default ProductLayout;
