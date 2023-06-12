@@ -19,7 +19,7 @@ export default function ProductCard({ product }) {
         title="green iguana"
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
+        <Typography gutterBottom variant="h5" component="div" >
           {truncate(product.title, 50)}
         </Typography>
         <Typography variant="body2" color="text.secondary">

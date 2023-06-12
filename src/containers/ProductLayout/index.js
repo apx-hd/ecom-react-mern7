@@ -1,31 +1,20 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import ProductDetailCard from "../../components/ProductDetailCard";
+import { useFetch } from "../../hooks";
+import { ProductDetailContext } from "../../context/ProductDetailContext";
 
 function ProductLayout() {
   const { productID } = useParams();
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const { data, loading, error, setProductID } = useContext(ProductDetailContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(
-          `http://localhost:4000/api/products/${productID}`
-        );
-        console.log(data);
-        setData(data);
-        setLoading(false);
-      } catch (err) {
-        setError(true);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
+    if (productID) {
+      setProductID(productID)
+    }
+  }, [productID])
+  
   return (
     <>
       {loading && <h1>Loading...</h1>}
