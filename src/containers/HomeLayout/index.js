@@ -8,10 +8,29 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { ProductContext } from "../../context/ProductContext";
-
+import { useSelector, useDispatch } from "react-redux";
+import { fetchAllData } from "../../store/slices/productSlice";
 
 function HomeLayout() {
-  const { data, loading, error, category, handleChange } = useContext(ProductContext);
+  // const { data, loading, error, category, handleChange } = useContext(ProductContext);
+
+  //Redux Approach
+  const [category, setCategory] = useState("");
+
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+  };
+
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(fetchAllData());
+  }, []);
+
+  useEffect(() => {
+    dispatch(fetchAllData(category));
+  }, [category])
 
   return (
     <Box p={10} sx={{ display: "flex", justifyContent: "center" }}>
@@ -19,6 +38,7 @@ function HomeLayout() {
       {!loading && error && <h1>Error Occured</h1>}
       {!loading &&
         !error &&
+        data &&
         (data.length > 0 ? (
           <Box
             display="flex"
