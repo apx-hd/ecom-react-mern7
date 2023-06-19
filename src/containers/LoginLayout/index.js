@@ -9,8 +9,27 @@ function LoginLayout() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const {saveToken} = useContext(AuthContext)
+    const  [errors, setErrors] = useState({email: "", password: ""})
+
+    const validate = () => {
+      let errors = {}
+      if(email === "" ){
+        errors.email = "Email is required"
+      }
+      if(password === ""){
+        errors.password = "Password is required"
+      }
+
+      setErrors(errors);
+      if(Object.keys(errors).length !== 0) {
+        return false
+      } else {
+        return true;
+      }
+    }
 
   const handleLogin = async () => {
+    if(!validate()) return;
     //API Call
     try {
       const { data } = await axios.post(
@@ -45,14 +64,24 @@ function LoginLayout() {
             label="Email"
             fullWidth
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setErrors({...errors, email: ""})
+              setEmail(e.target.value)
+            }}
+            error={errors.email}
+            helperText={errors.email}
           ></TextField>
           <TextField
             type="password"
             label="Password"
             fullWidth
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setErrors({...errors, password: ""})
+              setPassword(e.target.value)
+            }}
+            error={errors.password}
+            helperText={errors.password}
           ></TextField>
           <Button variant="contained" onClick={handleLogin}>
             Login

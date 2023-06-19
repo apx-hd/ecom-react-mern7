@@ -14,7 +14,7 @@ function ProductLayout() {
       setProductID(productID)
     }
   }, [productID])
-  
+
   return (
     <>
       {loading && <h1>Loading...</h1>}
